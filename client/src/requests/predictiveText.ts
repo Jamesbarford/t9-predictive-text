@@ -1,5 +1,5 @@
-import { getRequest } from "../../lib/apiRequests/MakeXMLHttpRequest";
+import { makeGetRequest } from "../../lib/apiRequests/request";
 
 export function getSuggestions(keys: string): Promise<any> {
-    return getRequest(`/predict/${keys}`);
+    return makeGetRequest(`/predict/${keys}`);
 }
