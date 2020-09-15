@@ -4,7 +4,7 @@ import path from "path";
 import { lowerCase } from "./util";
 
 export class Trie {
-    public head = new TrieNode("");
+    public head = new ChildNode("");
 
     private keyMap: Record<string, string> = {
         2: "abc",
@@ -25,15 +25,16 @@ export class Trie {
 
     public insert(word: string): void {
         const letters = word.split("");
-        let currentNode: TrieNode | undefined = this.head;
+        let currentNode: ChildNode | undefined = this.head;
 
         for (const char of letters) {
             const key = lowerCase(char);
 
             if (!currentNode?.children.has(key)) {
-                const newNode = new TrieNode(key);
+                const newNode = new ChildNode(key);
+                const parentNode = new TrieNode(currentNode?.parent, currentNode?.parentKey);
 
-                newNode.parent = currentNode;
+                newNode.parent = parentNode;
                 newNode.parentKey = currentNode?.key;
 
                 currentNode?.children.set(key, newNode);
@@ -76,13 +77,7 @@ export class Trie {
 }
 
 class TrieNode {
-    public constructor(
-        public key: string,
-        public children: Map<string, TrieNode> = new Map(),
-        public isLeaf: boolean = false,
-        public parent: TrieNode | undefined = undefined,
-        public parentKey?: string
-    ) {}
+    public constructor(public parent?: TrieNode, public parentKey?: string) {}
 
     public getWord(): string {
         const output = [];
@@ -94,6 +89,18 @@ class TrieNode {
         }
 
         return output.join("");
+    }
+}
+
+class ChildNode extends TrieNode {
+    public constructor(
+        public key: string,
+        public children: Map<string, ChildNode> = new Map(),
+        public isLeaf: boolean = false,
+        public parent?: TrieNode,
+        public parentKey?: string
+    ) {
+        super(parent, parentKey);
     }
 }
 
