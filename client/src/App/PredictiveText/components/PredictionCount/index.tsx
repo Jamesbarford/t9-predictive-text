@@ -15,9 +15,14 @@ interface MapStateToProps {
 
 type PredictionCountProps = OwnProps & MapStateToProps;
 
-const PredictionCount: React.FC<PredictionCountProps> = props => (
-    <div>Found {String(props.predictionCount)} possible options!</div>
-);
+const PredictionCount: React.FC<PredictionCountProps> = props => {
+    const message =
+        props.predictionCount === 0
+            ? "Found no options!"
+            : `Found ${String(props.predictionCount)} possible options!`;
+
+    return <div>{message}</div>;
+};
 
 export const PredictionCountConnected = connect<MapStateToProps, null, OwnProps>(() =>
     createStructuredSelector<AppState, OwnProps, MapStateToProps>({
