@@ -21,8 +21,8 @@ describe("predictiveTextReducer", () => {
             const newState = predictiveTextReducer(state, getPredictionsStart(KEYS));
 
             expect(newState.byId[KEYS].requestState).toEqual(Loading);
-            expect(newState.byId[KEYS].suggestions).toEqual([]);
-            expect(newState.byId[KEYS].currentSuggestion).toEqual(0);
+            expect(newState.byId[KEYS].predictions).toEqual([]);
+            expect(newState.byId[KEYS].currentPredictionIndex).toEqual(0);
         });
 
         it("should only set requestState to Loading", () => {
@@ -33,7 +33,7 @@ describe("predictiveTextReducer", () => {
             )(state);
 
             expect(newState.byId[KEYS].requestState).toEqual(Loading);
-            expect(newState.byId[KEYS].suggestions).toEqual(SUGGESTIONS);
+            expect(newState.byId[KEYS].predictions).toEqual(SUGGESTIONS);
         });
     });
 
@@ -64,8 +64,8 @@ describe("predictiveTextReducer", () => {
             const newState = predictiveTextReducer(state, getPredictionsSuccess(KEYS, SUGGESTIONS));
 
             expect(newState.byId[KEYS].requestState).toEqual(Success);
-            expect(newState.byId[KEYS].suggestions).toEqual(SUGGESTIONS);
-            expect(newState.byId[KEYS].currentSuggestion).toBe(0);
+            expect(newState.byId[KEYS].predictions).toEqual(SUGGESTIONS);
+            expect(newState.byId[KEYS].currentPredictionIndex).toBe(0);
         });
 
         it("should set requestState to Success if Suggestion exists", () => {
@@ -75,7 +75,7 @@ describe("predictiveTextReducer", () => {
             )(state);
 
             expect(newState.byId[KEYS].requestState).toEqual(Success);
-            expect(newState.byId[KEYS].suggestions).toEqual(SUGGESTIONS);
+            expect(newState.byId[KEYS].predictions).toEqual(SUGGESTIONS);
         });
     });
 });

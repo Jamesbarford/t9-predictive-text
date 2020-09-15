@@ -9,9 +9,9 @@ export interface PredictiveTextState {
     byId: Dictionary<Suggestion>;
 }
 
-type Suggestion = {
-    suggestions: string[];
-    currentSuggestion: number;
+export type Suggestion = {
+    predictions: string[];
+    currentPredictionIndex: number;
     requestState: RequestState;
 };
 
@@ -56,9 +56,18 @@ export function predictiveTextReducer(
                 if (isNil(suggestion)) {
                     draftState.byId[action.keys] = createSuggestion(Success, action.suggestions);
                 } else {
-                    suggestion.suggestions = union(suggestion.suggestions, action.suggestions);
+                    suggestion.predictions = union(suggestion.predictions, action.suggestions);
                     suggestion.requestState = Success;
                 }
+            });
+
+        case PredictiveTextActionTypes.SetCurrentPredictionIndex:
+            return produce(state, draftState => {
+                const suggestion = getSuggestion(draftState, action.keys);
+
+                if (isNil(suggestion)) return;
+
+                suggestion.currentPredictionIndex = action.currentPredictionIndex;
             });
 
         default:
@@ -72,8 +81,8 @@ function getSuggestion(state: PredictiveTextState, key: string): Suggestion | un
 
 export function createSuggestion(requestState: RequestState, suggestions: string[] = []): Suggestion {
     return {
-        suggestions,
-        currentSuggestion: 0,
+        predictions: suggestions,
+        currentPredictionIndex: 0,
         requestState
     };
 }

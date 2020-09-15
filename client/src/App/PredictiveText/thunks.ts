@@ -1,18 +1,20 @@
 import { Dispatch } from "redux";
+
 import { createError } from "../../../lib/apiRequests/RequestState";
 import { getPredictionsFailure, getPredictionsStart, getPredictionsSuccess } from "./actions";
 import { getSuggestions } from "../../requests/predictiveText";
 import { toSuggestions } from "./apiConverter";
 
-export function getSuggestionsThunk(keys: string) {
+export function getPredictionsThunk(keys: string) {
     return async function (dispatch: Dispatch): Promise<void> {
+        console.log(keys)
         try {
             const sanitizedKeys = sanitizeKeys(keys);
             dispatch(getPredictionsStart(sanitizedKeys));
 
             const apiResponse = await getSuggestions(sanitizedKeys);
-            const suggestions = toSuggestions(apiResponse);
-            dispatch(getPredictionsSuccess(sanitizedKeys, suggestions));
+            const predictions = toSuggestions(apiResponse);
+            dispatch(getPredictionsSuccess(sanitizedKeys, predictions));
         } catch (e) {
             dispatch(getPredictionsFailure(keys, e));
             return;

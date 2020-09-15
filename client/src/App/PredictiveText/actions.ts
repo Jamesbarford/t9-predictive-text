@@ -4,7 +4,8 @@ import { RequestStateFailed } from "../../../lib/apiRequests/RequestState";
 export const enum PredictiveTextActionTypes {
     GetPredictionsStart = "PredictiveText.GetPredictionsStart",
     GetPredictionsFailure = "PredictiveText.GetPredictionsFailure",
-    GetPredictionsSuccess = "PredictiveText.GetPredictionsSuccess"
+    GetPredictionsSuccess = "PredictiveText.GetPredictionsSuccess",
+    SetCurrentPredictionIndex = "PredictiveText.SetCurrentPredictionIndex"
 }
 
 interface GetPredictionsStart extends Action {
@@ -44,4 +45,24 @@ export function getPredictionsSuccess(keys: string, suggestions: string[]): GetP
     };
 }
 
-export type PredictiveTextActions = GetPredictionsStart | GetPredictionsFailure | GetPredictionsSuccess;
+interface SetCurrentPredictionIndex extends Action {
+    type: PredictiveTextActionTypes.SetCurrentPredictionIndex;
+    keys: string;
+    currentPredictionIndex: number;
+}
+export function setCurrentPredictionIndex(
+    keys: string,
+    currentPredictionIndex: number
+): SetCurrentPredictionIndex {
+    return {
+        type: PredictiveTextActionTypes.SetCurrentPredictionIndex,
+        keys,
+        currentPredictionIndex
+    };
+}
+
+export type PredictiveTextActions =
+    | GetPredictionsStart
+    | GetPredictionsFailure
+    | GetPredictionsSuccess
+    | SetCurrentPredictionIndex;
