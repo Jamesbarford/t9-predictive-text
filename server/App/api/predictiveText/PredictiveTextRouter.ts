@@ -18,3 +18,7 @@ PredictiveTextRouter.get("/:seq", async (req, res) => {
         await res.send(e);
     }
 });
+
+PredictiveTextRouter.get("/", async (req, res) => {
+    await res.send([]);
+});

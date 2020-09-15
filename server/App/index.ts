@@ -15,15 +15,12 @@ app.use(morgan("dev"));
 app.use(express.static(__dirname));
 app.use(express.static(path.resolve("./dist-client")));
 
-const Router = express.Router();
-
-app.use("/api/predict/", PredictiveTextRouter);
-app.use("/api", Router);
+app.use("/api/predict", PredictiveTextRouter);
 
 app.get("/*", (req, res) => {
     res.sendFile(path.resolve("./dist-client/index.html"));
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening at port:${port}`);
+    console.log(`Listening on port:${port}`);
 });
