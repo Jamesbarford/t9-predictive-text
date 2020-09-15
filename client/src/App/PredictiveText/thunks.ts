@@ -16,7 +16,7 @@ export function getPredictionsThunk(keys: string) {
             const predictions = toSuggestions(apiResponse);
             dispatch(getPredictionsSuccess(sanitizedKeys, predictions));
         } catch (e) {
-            dispatch(getPredictionsFailure(keys, e));
+            dispatch(getPredictionsFailure(keys, createError("Failed to get predictions", e)));
             return;
         }
     };

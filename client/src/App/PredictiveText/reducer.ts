@@ -78,7 +78,7 @@ export function predictiveTextReducer(
 
                 const nextIndex = ++suggestion.currentPredictionIndex;
 
-                if (nextIndex > suggestion.predictions.length) {
+                if (nextIndex > suggestion.predictions.length - 1) {
                     suggestion.currentPredictionIndex = 0;
                 } else {
                     suggestion.currentPredictionIndex = nextIndex;
