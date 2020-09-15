@@ -4,7 +4,63 @@ import path from "path";
 import { lowerCase } from "./util";
 
 export class Trie {
-    public head = new ChildNode("");
+    public head = new TrieNode("");
+
+    public insertMany(words: string[]): void {
+        for (const word of words) {
+            this.insert(word);
+        }
+    }
+
+    public insert(word: string): void {
+        const letters = word.split("");
+        let currentNode: TrieNode | undefined = this.head;
+
+        for (const char of letters) {
+            const lowerChar: string = lowerCase(char);
+
+            if (!currentNode?.children.has(lowerChar)) {
+                const newNode = new TrieNode(lowerChar);
+
+                currentNode?.children.set(lowerChar, newNode);
+                currentNode = newNode;
+            } else {
+                currentNode = currentNode.children.get(lowerChar);
+            }
+        }
+
+        if (currentNode && !currentNode.isLeaf) {
+            currentNode.isLeaf = true;
+        }
+    }
+
+    public getWordsFromNumber(
+        strNum: string,
+        currentNode: TrieNode = this.head,
+        depth: number = 0,
+        words: Set<string> = new Set<string>(),
+        currentStr: string = ""
+    ): string[] {
+        const char: string = strNum[depth];
+
+        currentStr += currentNode.char;
+
+        if (currentNode.isLeaf && currentStr.length === strNum.length) {
+            words.add(currentStr);
+        }
+
+        currentNode.children.forEach(childNode => {
+            if (this.isInKeyMap(childNode.char, char)) {
+                this.getWordsFromNumber(strNum, childNode, depth + 1, words, currentStr);
+            }
+        });
+
+        return Array.from(words);
+    }
+
+    private isInKeyMap(char: string, num: string): boolean {
+        return num in this.keyMap && this.keyMap[num].includes(char);
+    }
 
     private keyMap: Record<string, string> = {
         2: "abc",
@@ -16,92 +72,14 @@ export class Trie {
         8: "tuv",
         9: "wxyz"
     };
-
-    public insertMany(words: string[]): void {
-        for (const word of words) {
-            this.insert(word);
-        }
-    }
-
-    public insert(word: string): void {
-        const letters = word.split("");
-        let currentNode: ChildNode | undefined = this.head;
-
-        for (const char of letters) {
-            const key = lowerCase(char);
-
-            if (!currentNode?.children.has(key)) {
-                const newNode = new ChildNode(key);
-                const parentNode = new TrieNode(currentNode?.parent, currentNode?.parentKey);
-
-                newNode.parent = parentNode;
-                newNode.parentKey = currentNode?.key;
-
-                currentNode?.children.set(key, newNode);
-                currentNode = newNode;
-            } else {
-                currentNode.parentKey = currentNode.key;
-                currentNode = currentNode.children.get(key);
-            }
-        }
-
-        if (currentNode && !currentNode.isLeaf) {
-            currentNode.isLeaf = true;
-            currentNode.parentKey = currentNode.key;
-        }
-    }
-
-    public getWordsFromNumber(
-        strNum: string,
-        currentNode = this.head,
-        depth = 0,
-        words: Set<string> = new Set<string>()
-    ): string[] {
-        currentNode.children.forEach(childNode => {
-            if (childNode.isLeaf) {
-                if (depth >= strNum.length) {
-                    words.add(currentNode.getWord());
-                }
-            }
-
-            const char: string = strNum[depth];
-            const nextSequence: string = this.keyMap?.[char] || "";
-
-            if (nextSequence.indexOf(childNode.key) !== -1) {
-                this.getWordsFromNumber(strNum, childNode, depth + 1, words);
-            }
-        });
-
-        return Array.from(words);
-    }
 }
 
 class TrieNode {
-    public constructor(public parent?: TrieNode, public parentKey?: string) {}
-
-    public getWord(): string {
-        const output = [];
-        let node: TrieNode | undefined = this;
-
-        while (node?.parentKey != null) {
-            output.unshift(node.parentKey);
-            node = node.parent;
-        }
-
-        return output.join("");
-    }
-}
-
-class ChildNode extends TrieNode {
     public constructor(
-        public key: string,
-        public children: Map<string, ChildNode> = new Map(),
-        public isLeaf: boolean = false,
-        public parent?: TrieNode,
-        public parentKey?: string
-    ) {
-        super(parent, parentKey);
-    }
+        public readonly char: string,
+        public readonly children: Map<string, TrieNode> = new Map(),
+        public isLeaf: boolean = false
+    ) {}
 }
 
 export function createTrieAndSeed(): Trie {
