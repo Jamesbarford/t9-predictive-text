@@ -39,7 +39,7 @@ export const Initial = Object.freeze({
 });
 
 export const Success = Object.freeze({
-    state: RequestStates.LOADING
+    state: RequestStates.SUCCESS
 });
 
 export function hasFailed(s: RequestState): s is RequestStateFailed {
