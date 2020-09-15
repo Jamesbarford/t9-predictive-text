@@ -44,7 +44,13 @@ export class MakeXMLRequest {
                     );
 
                     if (this._xhr.status >= 200 && this._xhr.status < 300) return resolve(response);
-                    else return reject(createError(response));
+                    else {
+                        if (this._xhr.getResponseHeader("content-type")?.includes("application/json")) {
+                            return reject(createError(response));
+                        } else {
+                            return reject(createError("Failed to make request"));
+                        }
+                    }
                 } catch (e) {
                     return reject(e);
                 }

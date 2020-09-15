@@ -1,3 +1,30 @@
-.ex {
-  background: red;
+html {
+  font-family: sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex--align-center {
+  display: flex;
+  align-items: center;
+}
+
+.flex--justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+.small--padded-item {
+  padding: 10px;
 }
