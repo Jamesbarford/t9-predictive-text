@@ -1,9 +1,21 @@
-import { lowerCase } from "./util";
 import fs from "fs";
 import path from "path";
 
+import { lowerCase } from "./util";
+
 export class Trie {
     public head = new TrieNode("");
+
+    private keyMap: Record<string, string> = {
+        2: "abc",
+        3: "def",
+        4: "ghi",
+        5: "jkl",
+        6: "mno",
+        7: "pqrs",
+        8: "tuv",
+        9: "wxyz"
+    };
 
     public insertMany(words: string[]): void {
         for (const word of words) {
@@ -18,7 +30,7 @@ export class Trie {
         for (const char of letters) {
             const key = lowerCase(char);
 
-            if (!currentNode || !currentNode.children.has(key)) {
+            if (!currentNode?.children.has(key)) {
                 const newNode = new TrieNode(key);
 
                 newNode.parent = currentNode;
@@ -38,46 +50,28 @@ export class Trie {
         }
     }
 
-    // flattens all nodes to array.
-    public printAll(node = this.head, arr: TrieNode[] = []): TrieNode[] {
-        node.children.forEach(n => {
-            arr.push(n);
-            if (n.children.size > 0) {
-                n.children.forEach(little => {
-                    arr.push(little);
-                    arr.push(...this.printAll(little));
-                });
+    public getWordsFromNumber(
+        strNum: string,
+        currentNode = this.head,
+        depth = 0,
+        words: Set<string> = new Set<string>()
+    ): string[] {
+        currentNode.children.forEach(childNode => {
+            if (childNode.isLeaf) {
+                if (depth >= strNum.length) {
+                    words.add(currentNode.getWord());
+                }
+            }
+
+            const char: string = strNum[depth];
+            const nextSequence: string = this.keyMap?.[char] || "";
+
+            if (nextSequence.indexOf(childNode.key) !== -1) {
+                this.getWordsFromNumber(strNum, childNode, depth + 1, words);
             }
         });
 
-        return arr;
-    }
-
-    public find(partialWord: string): string[] {
-        let node = this.head;
-        const output: string[] = [];
-        const lowerCased = String(lowerCase(partialWord));
-
-        for (let i = 0; i < lowerCased.length; ++i) {
-            const child = node.children.get(lowerCased[i]);
-            if (child) {
-                node = child;
-            } else {
-                return output;
-            }
-        }
-
-        return this.printToLeaf(node);
-    }
-
-    private printToLeaf(currentNode: TrieNode = this.head, words: string[] = []): string[] {
-        if (currentNode.isLeaf) words.push(currentNode.getWord());
-
-        for (const childNode of currentNode.children.values()) {
-            this.printToLeaf(childNode, words);
-        }
-
-        return words;
+        return Array.from(words);
     }
 }
 
@@ -108,13 +102,13 @@ export function createTrieAndSeed(): Trie {
 
     fs.readFile(path.resolve(__dirname, "./dictionary.txt"), (err, data) => {
         if (err) {
-            throw new Error("failed to construct Trie with dictionary");
+            throw new Error("Failed to construct Trie with dictionary");
         }
 
         const words = data
             .toString()
-            .replace(/[:;!?",'\.\*\[\]\d\$]/g, "")
-            .replace(/\-\-/g, " ")
+            .replace(/[:;!?",'\\[\]\d$]/g, "")
+            .replace(/\\-/g, " ")
             .toLowerCase()
             .split(/\s+/g);
 

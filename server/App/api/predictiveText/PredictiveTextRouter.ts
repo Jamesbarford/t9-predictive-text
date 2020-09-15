@@ -13,8 +13,8 @@ PredictiveTextRouter.get("/:seq", async (req, res) => {
     try {
         const allPermutations = predictiveTextService.getAllPredictions(req.params.seq);
 
-        res.send(allPermutations);
+        await res.send(allPermutations);
     } catch (e) {
-        res.send(e);
+        await res.send(e);
     }
 });
