@@ -70,6 +70,36 @@ export function predictiveTextReducer(
                 suggestion.currentPredictionIndex = action.currentPredictionIndex;
             });
 
+        case PredictiveTextActionTypes.NextPrediction:
+            return produce(state, draftState => {
+                const suggestion = getSuggestion(draftState, action.keys);
+
+                if (!suggestion) return;
+
+                const nextIndex = ++suggestion.currentPredictionIndex;
+
+                if (nextIndex > suggestion.predictions.length) {
+                    suggestion.currentPredictionIndex = 0;
+                } else {
+                    suggestion.currentPredictionIndex = nextIndex;
+                }
+            });
+
+        case PredictiveTextActionTypes.PreviousPrediction:
+            return produce(state, draftState => {
+                const suggestion = getSuggestion(draftState, action.keys);
+
+                if (!suggestion) return;
+
+                const previousIndex = --suggestion.currentPredictionIndex;
+
+                if (previousIndex < 0) {
+                    suggestion.currentPredictionIndex = suggestion.predictions.length - 1;
+                } else {
+                    suggestion.currentPredictionIndex = previousIndex;
+                }
+            });
+
         default:
             return state;
     }

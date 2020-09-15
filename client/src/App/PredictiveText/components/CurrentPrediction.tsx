@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+import "./currentPrediction.scss";
 
 import {
     hasFailed,
@@ -9,6 +10,7 @@ import {
     RequestState,
     Success
 } from "../../../../lib/apiRequests/RequestState";
+import { Spinner } from "../../../components/Spinner";
 import { AppState } from "../../../store/setup";
 import { selectCurrentPredictionFromOwnProp, selectRequestStateFromOwnProp } from "../selectors";
 
@@ -24,7 +26,7 @@ interface MapStateToProps {
 type CurrentPredictionProps = OwnProps & MapStateToProps;
 
 const CurrentPrediction: React.FC<CurrentPredictionProps> = props => {
-    function renderRequestState(): string {
+    function renderRequestState(): React.ReactNode {
         if (hasFailed(props.requestState)) return props.requestState.error.message;
 
         switch (props.requestState) {
@@ -32,7 +34,7 @@ const CurrentPrediction: React.FC<CurrentPredictionProps> = props => {
                 return "";
 
             case Loading:
-                return "Loading...";
+                return <Spinner />;
 
             case Success:
                 return props.prediction;
@@ -42,7 +44,11 @@ const CurrentPrediction: React.FC<CurrentPredictionProps> = props => {
         }
     }
 
-    return <span>{renderRequestState()}</span>;
+    return (
+        <div className="prediction--container flex--align-center flex--justify-center">
+            <span className="prediction--text">{renderRequestState()}</span>
+        </div>
+    );
 };
 
 export const CurrentPredictionConnected = connect<MapStateToProps, {}, OwnProps>(() =>

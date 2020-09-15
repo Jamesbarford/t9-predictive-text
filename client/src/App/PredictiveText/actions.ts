@@ -5,7 +5,9 @@ export const enum PredictiveTextActionTypes {
     GetPredictionsStart = "PredictiveText.GetPredictionsStart",
     GetPredictionsFailure = "PredictiveText.GetPredictionsFailure",
     GetPredictionsSuccess = "PredictiveText.GetPredictionsSuccess",
-    SetCurrentPredictionIndex = "PredictiveText.SetCurrentPredictionIndex"
+    SetCurrentPredictionIndex = "PredictiveText.SetCurrentPredictionIndex",
+    NextPrediction = "PredictiveText.NextPrediction",
+    PreviousPrediction = "PredictiveText.PreviousPrediction"
 }
 
 interface GetPredictionsStart extends Action {
@@ -61,8 +63,32 @@ export function setCurrentPredictionIndex(
     };
 }
 
+interface NextPrediction extends Action {
+    type: PredictiveTextActionTypes.NextPrediction;
+    keys: string;
+}
+export function nextPrediction(keys: string): NextPrediction {
+    return {
+        type: PredictiveTextActionTypes.NextPrediction,
+        keys
+    };
+}
+
+interface PreviousPrediction extends Action {
+    type: PredictiveTextActionTypes.PreviousPrediction;
+    keys: string;
+}
+export function previousPrediction(keys: string): PreviousPrediction {
+    return {
+        type: PredictiveTextActionTypes.PreviousPrediction,
+        keys
+    };
+}
+
 export type PredictiveTextActions =
     | GetPredictionsStart
     | GetPredictionsFailure
     | GetPredictionsSuccess
-    | SetCurrentPredictionIndex;
+    | SetCurrentPredictionIndex
+    | NextPrediction
+    | PreviousPrediction;

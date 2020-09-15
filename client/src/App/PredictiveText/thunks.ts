@@ -7,7 +7,7 @@ import { toSuggestions } from "./apiConverter";
 
 export function getPredictionsThunk(keys: string) {
     return async function (dispatch: Dispatch): Promise<void> {
-        console.log(keys)
+
         try {
             const sanitizedKeys = sanitizeKeys(keys);
             dispatch(getPredictionsStart(sanitizedKeys));

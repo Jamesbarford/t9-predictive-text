@@ -5,9 +5,12 @@ import { debounce } from "lodash";
 import { DispatchThunk } from "../../store/setup";
 import { getPredictionsThunk } from "./thunks";
 import { CurrentPredictionConnected } from "./components/CurrentPrediction";
+import { nextPrediction, previousPrediction } from "./actions";
 
 interface MapDispatchToProps {
     getPrediction(keys: string): void;
+    nextPrediction(keys: string): void;
+    previousPrediction(keys: string): void;
 }
 
 type PredictiveTextProps = MapDispatchToProps;
@@ -29,15 +32,36 @@ class PredictiveText extends React.Component<PredictiveTextProps, PredictiveText
 
     private getPredictionsDebounced = debounce(this.props.getPrediction, 350);
 
+    private getNextPrediction = (): void => {
+        this.props.nextPrediction(this.state.keys);
+    };
+
+    private previousPrediction = (): void => {
+        this.props.previousPrediction(this.state.keys);
+    };
+
     public render(): JSX.Element {
         return (
-            <div>
-                <input type="number" onChange={this.handleInput} value={this.state.keys} />
-                <div>
+            <div className="flex flex-column">
+                <div className="flex flex-column flex--align-center">
                     <h2>Current Suggestion</h2>
                     <CurrentPredictionConnected keys={this.state.keys} />
-                    <button type="button">Next Suggestion</button>
+
+                    <div>
+                        <button onClick={this.previousPrediction} type="button">
+                            Previous Suggestion
+                        </button>
+                        <button onClick={this.getNextPrediction} type="button">
+                            Next Suggestion
+                        </button>
+                    </div>
                 </div>
+                <input
+                    className="small--padded-item"
+                    type="number"
+                    onChange={this.handleInput}
+                    value={this.state.keys}
+                />
             </div>
         );
     }
@@ -48,6 +72,12 @@ export const PredictiveTextConnected = connect<null, MapDispatchToProps>(
     (dispatch: DispatchThunk) => ({
         getPrediction(keys: string): void {
             dispatch(getPredictionsThunk(keys));
+        },
+        nextPrediction(keys: string): void {
+            dispatch(nextPrediction(keys));
+        },
+        previousPrediction(keys: string): void {
+            dispatch(previousPrediction(keys));
         }
     })
 )(PredictiveText);
