@@ -4,10 +4,11 @@ import { Provider } from "react-redux";
 
 import "./style.scss";
 import { store } from "./store/setup";
+import { PredictiveTextConnected } from "./App/PredictiveText";
 
 const App: React.FC = () => (
     <Provider store={store}>
-        <div className="ex">hello</div>
+        <PredictiveTextConnected />
     </Provider>
 );
 

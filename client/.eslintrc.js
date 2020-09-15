@@ -29,6 +29,8 @@ module.exports = {
         "@typescript-eslint/ban-types": 0,
         "@typescript-eslint/no-inferrable-types": 0,
         "@typescript-eslint/no-explicit-any": 0,
-        "@typescript-eslint/no-use-before-define": 0
+        "@typescript-eslint/no-use-before-define": 0,
+        "@typescript-eslint/ban-ts-comment": 0,
+        "react/prop-types": 0
     }
 };

@@ -20,7 +20,7 @@ type RequestError = {
     info: any;
 };
 
-export function createError(error: string, info?: any): RequestStateFailed {
+export function createError<T>(error: string, info?: T): RequestStateFailed {
     return {
         state: RequestStates.FAILED,
         error: {
@@ -35,7 +35,7 @@ export const Loading = Object.freeze({
 });
 
 export const Initial = Object.freeze({
-    state: RequestStates.LOADING
+    state: RequestStates.INITIAL
 });
 
 export const Success = Object.freeze({
