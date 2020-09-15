@@ -15,7 +15,8 @@
     "allowJs": false,
     "downlevelIteration": true,
     "strictNullChecks": true,
-    "jsx": "react"
+    "jsx": "react",
+    "types": ["global.d.ts"]
   },
   "exclude": ["node_modules"]
 }
