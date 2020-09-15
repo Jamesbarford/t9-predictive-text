@@ -1,15 +1,8 @@
 import * as React from "react";
 import { render } from "react-dom";
-import { Provider } from "react-redux";
-
 import "./style.scss";
-import { store } from "./store/setup";
 
-const App: React.FC = () => (
-    <Provider store={store}>
-        <div className="ex">hello</div>
-    </Provider>
-);
+const App: React.FC = () => <div className="ex">hello</div>;
 
 const root = document.getElementById("root");
 

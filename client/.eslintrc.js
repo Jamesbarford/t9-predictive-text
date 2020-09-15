@@ -5,7 +5,6 @@ module.exports = {
     plugins: [
         '@typescript-eslint',
     ],
-    plugins: ["@typescript-eslint"],
     parserOptions: {
         project: path.resolve(__dirname, "./tsconfig.json"),
         ecmaVersion: 2020,
@@ -20,7 +19,10 @@ module.exports = {
             version: "detect"
         }
     },
-    extends: ["plugin:react/recommended", "plugin:@typescript-eslint/recommended"],
+    extends: [
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
     rules: {
         "@typescript-eslint/explicit-function-return-type": 1,
         "@typescript-eslint/explicit-member-accessibility": 1,
