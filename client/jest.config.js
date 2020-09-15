@@ -1,7 +1,7 @@
 module.exports = {
     roots: ["<rootDir>/src"],
     transform: {
-        "^.+\\.(tsx|ts)?$": "ts-jest"
+        "^.+\\.(ts|tsx)$": "ts-jest"
     },
     moduleNameMapper: {
         ".+\\.(css|styl|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js"
@@ -16,6 +16,5 @@ module.exports = {
         }
     },
     testRegex: "(/__tests__/.*|(\\.|/)(test|spec|unit))\\.(ts|tsx)?$",
-    moduleFileExtensions: ["ts", "js", "json", "node", "tsx"],
-    setupFilesAfterEnv: ["<rootDir>/setupEnzyme.ts"]
+    moduleFileExtensions: ["ts", "js", "json", "node", "tsx"]
 };
