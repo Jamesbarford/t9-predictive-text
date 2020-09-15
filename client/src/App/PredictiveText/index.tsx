@@ -6,6 +6,7 @@ import { DispatchThunk } from "../../store/setup";
 import { getPredictionsThunk } from "./thunks";
 import { CurrentPredictionConnected } from "./components/CurrentPrediction";
 import { nextPrediction, previousPrediction } from "./actions";
+import { PredictionCountConnected } from "./components/PredictionCount";
 
 interface MapDispatchToProps {
     getPrediction(keys: string): void;
@@ -43,8 +44,9 @@ class PredictiveText extends React.Component<PredictiveTextProps, PredictiveText
     public render(): JSX.Element {
         return (
             <div className="flex flex-column">
-                <div className="flex flex-column flex--align-center">
+                <div className="flex flex-column flex--align-center small--padded-item">
                     <h2>Current Suggestion</h2>
+                    <PredictionCountConnected keys={this.state.keys} />
                     <CurrentPredictionConnected keys={this.state.keys} />
 
                     <div>

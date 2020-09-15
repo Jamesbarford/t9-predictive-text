@@ -12,6 +12,12 @@ export function selectSuggestionFromKeyOwnProp() {
     };
 }
 
+export function selectPredictionCountFromOwnProp() {
+    return function (appState: AppState, ownProp: SuggestionKeyOwnProp): number {
+        return selectPredictionsFromKeyOwnProp()(appState, ownProp).length;
+    };
+}
+
 export function selectPredictionsFromKeyOwnProp() {
     return function (appState: AppState, ownProp: SuggestionKeyOwnProp): string[] {
         return getSuggestion(appState, ownProp.keys)?.predictions || [];

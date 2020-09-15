@@ -9,10 +9,10 @@ import {
     Loading,
     RequestState,
     Success
-} from "../../../../lib/apiRequests/RequestState";
-import { Spinner } from "../../../components/Spinner";
-import { AppState } from "../../../store/setup";
-import { selectCurrentPredictionFromOwnProp, selectRequestStateFromOwnProp } from "../selectors";
+} from "../../../../../lib/apiRequests/RequestState";
+import { Spinner } from "../../../../components/Spinner";
+import { AppState } from "../../../../store/setup";
+import { selectCurrentPredictionFromOwnProp, selectRequestStateFromOwnProp } from "../../selectors";
 
 interface OwnProps {
     keys: string;
